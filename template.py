@@ -25,12 +25,6 @@ PROJECT_STRUCTURE = {
         "__init__.py",
         "domain_router.py",
     ],
-    "tests": [
-        "__init__.py",
-        "test_llm.py",
-        "test_education_agent.py",
-        "test_router.py",
-    ],
     "config": [
         "__init__.py",
         "settings.py",
