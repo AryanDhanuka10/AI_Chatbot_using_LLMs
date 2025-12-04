@@ -1,7 +1,6 @@
-"""Module: education_prompt.
+"""Education Domain Prompt Template"""
 
-Prompt template for EducationAgent using context-aware formatting.
-"""
+from __future__ import annotations
 
 from typing import Dict
 
@@ -9,36 +8,17 @@ from src.agents.prompts.base_prompt import BasePromptTemplate
 
 
 class EducationPrompt(BasePromptTemplate):
-    """Prompt template for educational explanations."""
+    """Prompt template for education / explanation tasks."""
 
     def build_prompt(self, query: str, context: Dict) -> str:
-        """Build a context-aware educational prompt.
+        memory = "\n".join(context.get("memory", []))
 
-        Args:
-        ----
-            query: The user query.
-            context: Conversation memory and state.
-
-        Returns:
-        -------
-            A formatted prompt string tailored for educational explanations.
-
-        """
-        memory_section = "\n".join(context.get("memory", []))
-
-        return f"""
-You are a highly skilled educational tutor specializing in clear, "
-"step-by-step explanations.
-
-Conversation History:
-{memory_section}
-
-Current Question:
-{query}
-
-Respond with:
-- simple explanation first,
-- deeper understanding next,
-- examples where helpful,
-- do not hallucinate facts.
-"""
+        return (
+            "You are an Education Expert.\n"
+            "Explain concepts clearly, step-by-step, and avoid unnecessary complexity.\n"
+            "Use examples, analogies, and concise explanations.\n"
+            "If code is needed, keep it simple.\n\n"
+            f"Conversation Memory:\n{memory}\n\n"
+            f"User Query:\n{query}\n\n"
+            "Provide the final answer below:"
+        )

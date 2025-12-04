@@ -1,28 +1,40 @@
 """Module: context_manager.
 
-Simple context manager for agents to store domain-specific memory/state.
+Maintains short-term conversation memory and structured context
+for RAG + LLM prompting.
 """
+
+from __future__ import annotations
 
 from typing import Dict, List
 
 
 class ContextManager:
-    """Manages conversation memory and domain context."""
+    """Stores user/assistant message history and builds
+    structured context for agents.
+    """
 
     def __init__(self) -> None:
-        """Initialize empty memory and state containers."""
         self.memory: List[str] = []
         self.state: Dict = {}
 
-    def add_memory(self, text: str) -> None:
-        """Append new conversation info to memory."""
-        self.memory.append(text)
+    def add_memory(self, user_msg: str, assistant_msg: str) -> None:
+        """Add the latest user + assistant messages to memory."""
+        self.memory.append(f"User: {user_msg}")
+        self.memory.append(f"Assistant: {assistant_msg}")
 
-    def get_context(self) -> Dict:
-        """Return memory and state in a dictionary."""
-        return {"memory": self.memory, "state": self.state}
+        # Keep memory bounded (prevents prompt explosion)
+        if len(self.memory) > 12:
+            self.memory = self.memory[-12:]
 
-    def reset(self) -> None:
-        """Clear all stored context."""
-        self.memory.clear()
-        self.state.clear()
+    def build_context(self) -> Dict:
+        """Build structured context dictionary expected by agents."""
+        return {
+            "memory": self.memory,
+            "state": self.state,
+        }
+
+    def clear(self) -> None:
+        """Reset full memory and state."""
+        self.memory = []
+        self.state = {}
