@@ -1,7 +1,8 @@
 
 <p align="center">
-  <img src="https://media.istockphoto.com/id/1478342933/photo/artificial-intelligence-concept-generative-ai.webp?b=1&s=170667a&w=0&k=20&c=B7ZpHNQHUe7udxR7xllrc3qmaOBR6V0sRKKxgPHoT1o=" width="80%" />
+  <img src="assets/banner.png" alt="AI Chatbot Banner" width="80%">
 </p>
+
 
 <h1 align="center">🤖 AI Chatbot Using LLMs — Multi-Domain Intelligent Assistant</h1>
 
