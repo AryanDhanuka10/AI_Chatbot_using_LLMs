@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="assets/banner.png" alt="AI Chatbot Banner" width="80%">
+  <img src="frontend/assets/banner.png" alt="AI Chatbot Banner" width="80%">
 </p>
 
 
