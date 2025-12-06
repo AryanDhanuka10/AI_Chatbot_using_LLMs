@@ -1,104 +1,113 @@
 
+---
+
 # 📘 **AI Chatbot Using LLMs — Multi-Domain Intelligent Assistant**
 
 <p align="center">
   <img src="frontend/src/assets/banner.png" alt="AI Chatbot Banner" width="720">
 </p>
 
-A full-stack **LLM-powered AI Chatbot** built with a modern architecture:
+A full-stack **LLM-powered AI Chatbot** built with a modern, scalable architecture:
 
-* 🧠 **Groq LLMs (Llama-3.1)**
+* 🧠 **Groq LLMs (Llama 3.1)**
 * ⚡ **FastAPI Backend**
 * 💻 **React Frontend (Vite)**
 * 🔍 **RAG (Retrieval-Augmented Generation)**
 * 🧩 **Modular Multi-Agent System**
-* 🔒 **Safe Domain-Restricted Prompts**
+* 🔒 **Safe, Domain-Restricted Prompting**
 
 This system supports **5 intelligent domains**:
 
 * 🎓 Education
 * 💻 Coding
-* ⚕️ Medical (Safe explanations only)
-* ⚖️ Legal (Non-advisory)
+* ⚕️ Medical (safe, non-prescriptive explanations)
+* ⚖️ Legal (non-advisory explanations)
 * 💬 General conversation
 
 ---
 
 # 🌐 **Live Deployment**
 
-👉 **[Open the AI Chatbot](https://ai-chatbot-using-ll-ms.vercel.app/)**  
+👉 **🚀 [Open the Live AI Chatbot](https://ai-chatbot-using-ll-ms.vercel.app/)**
 
-
+---
 
 # 🎯 **Key Features**
 
-### 🧠 **1. Domain-Aware Multi-Agent System**
+## 🧠 **1. Domain-Aware Multi-Agent System**
 
-The Domain Router classifies every query into one of:
+Every query is classified into one expert domain:
 
 | Domain    | Purpose                                     |
 | --------- | ------------------------------------------- |
-| Education | Concepts, theory, step-by-step explanations |
+| Education | Theory, explanations, step-by-step learning |
 | Coding    | Debugging, optimization, code generation    |
-| Medical   | Safe educational medical explanations       |
-| Legal     | Educational legal descriptions              |
-| General   | General conversation, reasoning             |
+| Medical   | Safe educational medical insights           |
+| Legal     | Legal concepts (educational only)           |
+| General   | Normal conversation & reasoning             |
 
-Each agent has its own **expert prompt template** optimized for structured, high-quality responses.
+Each domain uses a **custom engineered prompt template** for reliable, structured, high-quality responses.
 
 ---
 
-### 📚 **2. RAG Pipeline (PDF/TXT Upload + FAISS Retrieval)**
+## 📚 **2. RAG Pipeline (PDF/TXT Upload + FAISS Retrieval)**
 
-Your backend supports:
+Supports:
 
 * PDF/TXT ingestion
+* Text extraction
 * Chunking
-* Embedding using **all-MiniLM-L6-v2**
+* Embedding via **SentenceTransformers (MiniLM-L6-v2)**
 * FAISS vector indexing
-* Top-K retrieval for relevant context
+* Top-K semantic retrieval
+
+⭐ **Hugging Face Transformers are used here**
+For embeddings only — inference uses **Groq LLMs**, not HF models.
 
 ---
 
-### 💻 **3. Modern React Frontend**
+## 💻 **3. Modern React Frontend (Vite)**
 
-Your frontend (in `/frontend/src/`) includes:
+UI includes:
 
-* **Animated chat messages**
-* **Typing animation for AI**
-* **Timestamps**
-* **Chat history export**
-* **Sliding sidebar**
-* **Domain highlighting**
-* **File upload for RAG**
-* **Smooth scroll-to-bottom**
-* **Toast notifications**
+* ✨ Animated AI typing
+* 🕒 Timestamps
+* 📜 Chat history export
+* 🎛️ Sliding sidebar
+* 🗂️ File upload for RAG
+* 🎨 Domain-colored chat bubbles
+* ⬇️ Smooth auto-scroll
+* 🔔 Toast notifications
+
+Frontend lives in **`/frontend/src/`**.
 
 ---
 
-### ⚡ **4. FastAPI Backend**
+## ⚡ **4. FastAPI Backend**
 
 Endpoints:
 
-| Method | Endpoint  | Function              |
-| ------ | --------- | --------------------- |
-| POST   | `/chat`   | Main REST chat        |
-| POST   | `/upload` | Add documents for RAG |
-| GET    | `/health` | Health check          |
-| WS     | `/stream` | Token streaming       |
+| Method | Endpoint  | Description              |
+| ------ | --------- | ------------------------ |
+| POST   | `/chat`   | Main chat interface      |
+| POST   | `/upload` | Document ingestion (RAG) |
+| GET    | `/health` | Health check             |
+| WS     | `/stream` | Streamed responses       |
 
 ---
 
-### 🧩 **5. Clean Modular Architecture**
+## 🧩 **5. Clean Modular Architecture**
+
+Includes:
 
 * Agents
 * Prompt templates
-* RAG pipeline
-* Domain routing
+* RAG system
+* Domain router
 * LLM wrapper
-* Context memory
+* Context manager
 
-Everything extendable & replaceable.
+Everything extendable, clean, and production-ready.
 
 ---
 
@@ -106,16 +115,15 @@ Everything extendable & replaceable.
 
 ### **Frontend**
 
-* React
-* Vite
+* React (Vite)
 * Axios
 * Tailwind (optional)
 
 ### **Backend**
 
 * FastAPI
-* Groq API (Llama-3.1-70B / 8B)
-* Sentence Transformers
+* Groq API (Llama-3.1 models)
+* **Hugging Face SentenceTransformers** (embedding only)
 * FAISS CPU
 * PyPDF2
 
@@ -211,17 +219,17 @@ conda create -n llm_backend python=3.10 -y
 conda activate llm_backend
 ```
 
-## 3️⃣ Install backend dependencies
+## 3️⃣ Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 4️⃣ Create `.env` file
+## 4️⃣ Create `.env`
 
 ```
 GROQ_API_KEY=your_api_key_here
-GROQ_MODEL=llama-3.1-70b-versatile   # recommended
+GROQ_MODEL=llama-3.1-70b-versatile
 ```
 
 ## 5️⃣ Start backend
@@ -230,13 +238,12 @@ GROQ_MODEL=llama-3.1-70b-versatile   # recommended
 uvicorn src.api.server:app --reload
 ```
 
-Backend → [http://127.0.0.1:8000](http://127.0.0.1:8000)
+Backend URL:
+**[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
 ---
 
 # 💻 Frontend Setup
-
-Navigate to frontend:
 
 ```bash
 cd frontend
@@ -244,13 +251,12 @@ npm install
 npm run dev
 ```
 
-Frontend → [http://localhost:5173](http://localhost:5173)
+Frontend URL:
+**[http://localhost:5173](http://localhost:5173)**
 
 ---
 
 # 📤 API Example
-
-### Request:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/chat \
@@ -262,17 +268,33 @@ curl -X POST http://127.0.0.1:8000/chat \
 
 # 🧪 RAG Usage
 
-Upload PDFs/TXT from the frontend sidebar → backend indexes them → responses include retrieved knowledge.
+Upload PDFs/TXT from the sidebar → system indexes → responses automatically use retrieved knowledge.
+
+---
+
+# 📦 **Additional Notes**
+
+### ✔ HuggingFace Transformers
+
+Used **only for embeddings** inside RAG:
+
+* `sentence-transformers/all-MiniLM-L6-v2`
+
+### ✔ LLM Inference
+
+Powered entirely by **Groq API** (Llama-3.1 family).
 
 ---
 
 # 📄 License
 
-MIT License © 2025 — Aryan Dhanuka
+MIT License © 2025 — **Aryan Dhanuka**
 
 ---
 
 # ⭐ Support
 
-If this project helped you, please ⭐ the repository.
+If this project helped you, please **star the repository** ⭐.
+
+---
 
