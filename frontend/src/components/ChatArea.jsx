@@ -5,7 +5,7 @@ import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github-dark.css'
 import './ChatArea.css'
 
-function ChatArea({ messages, domain, sessionId, messagesEndRef }) {
+function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesEndRef }) {
     const getDomainIcon = (domain) => {
         const icons = {
             General: '🌐',
@@ -24,6 +24,15 @@ function ChatArea({ messages, domain, sessionId, messagesEndRef }) {
                     <span className="domain-badge">
                         {getDomainIcon(domain)} {domain}
                     </span>
+                    <select
+                        className="model-selector"
+                        value={model}
+                        onChange={(e) => onModelChange(e.target.value)}
+                    >
+                        <option value="llama-3.1-70b-versatile">🦙 Groq Llama-3.1-70B</option>
+                        <option value="gpt-4o">🤖 GPT-4o</option>
+                        <option value="gpt-3.5-turbo">⚡ GPT-3.5 Turbo</option>
+                    </select>
                     <span className="session-badge">
                         Session: {sessionId.substring(0, 12)}...
                     </span>

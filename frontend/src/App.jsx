@@ -11,6 +11,7 @@ const BACKEND_URL = 'http://127.0.0.1:8000'
 function App() {
   const [sessionId] = useState(`session-${Date.now()}`)
   const [domain, setDomain] = useState('General')
+  const [model, setModel] = useState('llama-3.1-70b-versatile')
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' })
@@ -86,6 +87,7 @@ function App() {
           session_id: sessionId,
           message: messageText,
           domain: domain,
+          model: model,
         }),
       })
 
@@ -216,6 +218,8 @@ function App() {
           <ChatArea
             messages={messages}
             domain={domain}
+            model={model}
+            onModelChange={setModel}
             sessionId={sessionId}
             messagesEndRef={messagesEndRef}
           />

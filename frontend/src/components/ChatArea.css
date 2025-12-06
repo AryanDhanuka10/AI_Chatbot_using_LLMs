@@ -21,14 +21,13 @@
 }
 
 .domain-badge {
-    padding: var(--space-2) var(--space-5);
+    padding: var(--space-2) var(--space-4);
     background: var(--gradient-primary);
     color: var(--color-text-inverse);
     border-radius: var(--radius-full);
     font-size: var(--font-size-sm);
-    font-weight: 700;
-    box-shadow: var(--shadow-primary);
-    transition: all var(--transition-base);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
 }
 
 .domain-badge:hover {
@@ -36,15 +35,40 @@
     box-shadow: var(--shadow-md);
 }
 
+.model-selector {
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    outline: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.model-selector:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.model-selector:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
 .session-badge {
     padding: var(--space-2) var(--space-4);
     background: var(--color-bg-tertiary);
-    color: var(--color-text-secondary);
-    border-radius: var(--radius-full);
+    color: var(--color-text-tertiary);
+    border-radius: var(--radius-md);
     font-size: var(--font-size-xs);
     font-family: var(--font-mono);
     border: 1px solid var(--color-border);
-    font-weight: 600;
 }
 
 .messages-container {
