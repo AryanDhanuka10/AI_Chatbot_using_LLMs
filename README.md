@@ -9,7 +9,7 @@
 
 A full-stack **LLM-powered AI Chatbot** built with a modern, scalable architecture:
 
-* 🧠 **Groq LLMs (Llama 3.1)**
+* 🧠 **OpenAI GPT-4o / GPT-3.5**
 * ⚡ **FastAPI Backend**
 * 💻 **React Frontend (Vite)**
 * 🔍 **RAG (Retrieval-Augmented Generation)**
@@ -46,7 +46,7 @@ Every query is classified into one expert domain:
 | Legal     | Legal concepts (educational only)           |
 | General   | Normal conversation & reasoning             |
 
-Each domain uses a **custom engineered prompt template** for reliable, structured, high-quality responses.
+Each domain uses a **custom engineered prompt template** for structured, safe, high-quality responses.
 
 ---
 
@@ -57,12 +57,12 @@ Supports:
 * PDF/TXT ingestion
 * Text extraction
 * Chunking
-* Embedding via **SentenceTransformers (MiniLM-L6-v2)**
+* Embedding via **HuggingFace SentenceTransformers (MiniLM-L6-v2)**
 * FAISS vector indexing
 * Top-K semantic retrieval
 
-⭐ **Hugging Face Transformers are used here**
-For embeddings only — inference uses **Groq LLMs**, not HF models.
+⭐ **Hugging Face Transformers are used for embeddings only**
+Inference is done using **OpenAI GPT models**, not HF models.
 
 ---
 
@@ -104,10 +104,10 @@ Includes:
 * Prompt templates
 * RAG system
 * Domain router
-* LLM wrapper
+* OpenAI LLM wrapper
 * Context manager
 
-Everything extendable, clean, and production-ready.
+Everything is clean, extendable, and production-ready.
 
 ---
 
@@ -122,8 +122,8 @@ Everything extendable, clean, and production-ready.
 ### **Backend**
 
 * FastAPI
-* Groq API (Llama-3.1 models)
-* **Hugging Face SentenceTransformers** (embedding only)
+* **OpenAI GPT-4o / GPT-3.5** (primary LLM)
+* **HuggingFace SentenceTransformers** (embedding only)
 * FAISS CPU
 * PyPDF2
 
@@ -152,10 +152,10 @@ aryandhanuka10-ai_chatbot_using_llms/
 │       ├── App.jsx
 │       ├── main.jsx
 │       ├── components/
-│       │   ├── ChatArea.jsx
-│       │   ├── InputArea.jsx
-│       │   ├── Sidebar.jsx
-│       │   └── Toast.jsx
+│           ├── ChatArea.jsx
+│           ├── InputArea.jsx
+│           ├── Sidebar.jsx
+│           └── Toast.jsx
 │
 └── src/
     ├── main.py
@@ -228,8 +228,8 @@ pip install -r requirements.txt
 ## 4️⃣ Create `.env`
 
 ```
-GROQ_API_KEY=your_api_key_here
-GROQ_MODEL=llama-3.1-70b-versatile
+OPENAI_API_KEY=your_api_key_here
+OPENAI_MODEL=gpt-4o   # recommended
 ```
 
 ## 5️⃣ Start backend
@@ -239,7 +239,7 @@ uvicorn src.api.server:app --reload
 ```
 
 Backend URL:
-**[http://127.0.0.1:8000](http://127.0.0.1:8000)**
+➡ **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
 ---
 
@@ -252,7 +252,7 @@ npm run dev
 ```
 
 Frontend URL:
-**[http://localhost:5173](http://localhost:5173)**
+➡ **[http://localhost:5173](http://localhost:5173)**
 
 ---
 
@@ -268,7 +268,7 @@ curl -X POST http://127.0.0.1:8000/chat \
 
 # 🧪 RAG Usage
 
-Upload PDFs/TXT from the sidebar → system indexes → responses automatically use retrieved knowledge.
+Upload PDFs/TXT → backend indexes → GPT uses retrieved knowledge automatically.
 
 ---
 
@@ -276,13 +276,15 @@ Upload PDFs/TXT from the sidebar → system indexes → responses automatically 
 
 ### ✔ HuggingFace Transformers
 
-Used **only for embeddings** inside RAG:
+Used **only for embedding** inside RAG:
 
-* `sentence-transformers/all-MiniLM-L6-v2`
+```
+sentence-transformers/all-MiniLM-L6-v2
+```
 
 ### ✔ LLM Inference
 
-Powered entirely by **Groq API** (Llama-3.1 family).
+Powered entirely by **OpenAI GPT-4o / GPT-3.5**.
 
 ---
 
