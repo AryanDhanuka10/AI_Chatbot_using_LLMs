@@ -1,11 +1,6 @@
-"""Module: rag_pipeline
-
-Coordinator for DocumentLoader + VectorStore.
-Provides `add_documents()` and `query()` for RAG-enabled agents.
-"""
+"""RAG Pipeline — loads → chunks → embeds → indexes → retrieves"""
 
 from __future__ import annotations
-
 from typing import List
 
 from src.rag.loader import DocumentLoader
@@ -13,7 +8,7 @@ from src.rag.vectorstore import VectorStore
 
 
 class RAGPipeline:
-    """Full RAG pipeline: load → chunk → embed → index → retrieve."""
+    """Full RAG pipeline wrapper."""
 
     def __init__(self) -> None:
         self.loader = DocumentLoader()
@@ -21,7 +16,6 @@ class RAGPipeline:
         self.ready = False
 
     def add_documents(self, paths: List[str]) -> None:
-        """Load & index multiple documents."""
         all_chunks = []
 
         for p in paths:
@@ -36,8 +30,6 @@ class RAGPipeline:
         self.ready = True
 
     def query(self, question: str, top_k: int = 5) -> List[str]:
-        """Retrieve most relevant chunks for a question."""
         if not self.ready:
             return []
-
-        return self.vectorstore.query(question, top_k=top_k)
+        return self.vectorstore.query(question, top_k)

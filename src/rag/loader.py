@@ -1,8 +1,4 @@
-"""Module: loader
-
-Loads documents (PDF, TXT) and splits them into clean text chunks
-for embedding + FAISS indexing.
-"""
+"""Document Loader — PDF + TXT → clean text chunks."""
 
 from __future__ import annotations
 
@@ -17,13 +13,12 @@ LOGGER.setLevel(logging.INFO)
 
 
 class DocumentLoader:
-    """Simple loader for PDFs and plain text files."""
+    """Loads documents and splits into chunks."""
 
     def __init__(self, chunk_size: int = 800, chunk_overlap: int = 100) -> None:
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
 
-    # Load a single file
     def load(self, path: str) -> List[str]:
         if not os.path.exists(path):
             raise FileNotFoundError(f"Document not found: {path}")
@@ -37,40 +32,38 @@ class DocumentLoader:
         else:
             raise ValueError(f"Unsupported file type: {ext}")
 
-        return self._split_into_chunks(text)
+        return self._chunk(text)
 
     def _load_pdf(self, path: str) -> str:
         LOGGER.info(f"Loading PDF: {path}")
         reader = PdfReader(path)
-        pages = [page.extract_text() or "" for page in reader.pages]
-        return "\n".join(pages)
+        return "\n".join(page.extract_text() or "" for page in reader.pages)
 
     def _load_txt(self, path: str) -> str:
-        LOGGER.info(f"Loading text file: {path}")
+        LOGGER.info(f"Loading TXT: {path}")
         with open(path, "r", encoding="utf-8", errors="ignore") as f:
             return f.read()
 
-    def _split_into_chunks(self, text: str) -> List[str]:
-        """Basic chunking without LangChain."""
+    def _chunk(self, text: str) -> List[str]:
         if not text.strip():
             return []
 
-        chunks = []
         words = text.split()
+        chunks = []
+        chunk = []
 
-        current = []
-        length = 0
+        curr_len = 0
 
-        for w in words:
-            if length + len(w) > self.chunk_size:
-                chunks.append(" ".join(current))
-                current = current[-self.chunk_overlap // 5 :]  # word-level overlap
-                length = sum(len(x) for x in current)
+        for word in words:
+            if curr_len + len(word) > self.chunk_size:
+                chunks.append(" ".join(chunk))
+                chunk = chunk[-self.chunk_overlap :]  # overlap
+                curr_len = sum(len(w) for w in chunk)
 
-            current.append(w)
-            length += len(w)
+            chunk.append(word)
+            curr_len += len(word)
 
-        if current:
-            chunks.append(" ".join(current))
+        if chunk:
+            chunks.append(" ".join(chunk))
 
         return chunks
