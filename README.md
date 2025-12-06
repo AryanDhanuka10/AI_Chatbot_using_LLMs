@@ -26,7 +26,11 @@ This system supports **5 intelligent domains**:
 
 # 🌐 **Live Deployment**
 
-👉 **Deployed Link:** [(https://ai-chatbot-using-ll-ms.vercel.app/)]
+## 🔗 **Visit Deployed App**
+
+**Live Demo:**  
+➡️ **https://ai-chatbot-using-ll-ms.vercel.app/**
+
 
 
 # 🎯 **Key Features**
