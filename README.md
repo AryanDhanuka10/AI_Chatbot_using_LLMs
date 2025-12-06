@@ -1,31 +1,8 @@
-Understood — your directory structure has **changed completely**, and your **frontend is now React**, NOT Streamlit.
-
-Your old README is now **incorrect**, **misleading**, and references components you no longer use.
-
-So here is a **fully corrected, clean, formatted, React-compatible README.md**, designed exactly for your **current project structure**.
-
----
-
-# ✅ **FINAL README.md FOR YOUR PROJECT — FULLY UPDATED FOR REACT + FASTAPI + RAG**
-
-## ✔ Matches your directory structure
-
-## ✔ Mentions all technologies you ACTUALLY use now
-
-## ✔ Professional, deploy-ready, corporate style
-
-## ✔ Clean formatting + image fixed
-
-## ✔ No Streamlit, No outdated components
-
-## ✔ Ready for GitHub
-
----
 
 # 📘 **AI Chatbot Using LLMs — Multi-Domain Intelligent Assistant**
 
 <p align="center">
-  <img src="https://cdn.pixabay.com/photo/2023/03/21/14/40/ai-7868011_1280.jpg" alt="AI Chatbot Banner" width="720">
+  <img src="frontend/src/assets/banner.png" alt="AI Chatbot Banner" width="720">
 </p>
 
 A full-stack **LLM-powered AI Chatbot** built with a modern architecture:
