@@ -38,7 +38,7 @@ function App() {
         messages: messages
       }
 
-      const updatedHistory = [currentChat, ...chatHistory.filter(chat => chat.id !== sessionId)].slice(0, 5)
+      const updatedHistory = [currentChat, ...chatHistory.filter(chat => chat.id !== sessionId)].slice(0, 10)
       setChatHistory(updatedHistory)
       localStorage.setItem('chatHistory', JSON.stringify(updatedHistory))
     }
@@ -206,7 +206,6 @@ function App() {
           onDomainChange={setDomain}
           onNewChat={handleNewChat}
           onExport={handleExport}
-          onFileUpload={handleFileUpload}
           sessionId={sessionId}
           messageCount={messages.length}
           chatHistory={chatHistory}

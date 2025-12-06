@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Plus, Upload, Download, History, Clock } from 'lucide-react'
+import { Plus, Download, History, Clock } from 'lucide-react'
 import './Sidebar.css'
 
 const DOMAINS = ['General', 'Education', 'Coding', 'Medical', 'Legal']
@@ -12,33 +11,7 @@ const DOMAIN_ICONS = {
     Legal: '⚖️'
 }
 
-function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport, onFileUpload, sessionId, messageCount, chatHistory, onLoadChat }) {
-    const [selectedFiles, setSelectedFiles] = useState([])
-    const [isDragging, setIsDragging] = useState(false)
-
-    const handleFileSelect = (e) => {
-        const files = Array.from(e.target.files)
-        setSelectedFiles(prev => [...prev, ...files])
-    }
-
-    const handleDrop = (e) => {
-        e.preventDefault()
-        setIsDragging(false)
-        const files = Array.from(e.dataTransfer.files)
-        setSelectedFiles(prev => [...prev, ...files])
-    }
-
-    const handleUpload = () => {
-        if (selectedFiles.length > 0) {
-            onFileUpload(selectedFiles)
-            setSelectedFiles([])
-        }
-    }
-
-    const removeFile = (index) => {
-        setSelectedFiles(prev => prev.filter((_, i) => i !== index))
-    }
-
+function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport, sessionId, messageCount, chatHistory, onLoadChat }) {
     return (
         <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
@@ -63,53 +36,6 @@ function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport
                         </option>
                     ))}
                 </select>
-            </div>
-
-            <div className="control-group">
-                <h3 className="control-heading">Knowledge Upload</h3>
-                <div
-                    className={`file-upload-area ${isDragging ? 'dragging' : ''}`}
-                    onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                    onDragLeave={() => setIsDragging(false)}
-                    onDrop={handleDrop}
-                    onClick={() => document.getElementById('fileInput').click()}
-                >
-                    <Upload size={48} />
-                    <p>Click or drag files here</p>
-                    <input
-                        id="fileInput"
-                        type="file"
-                        multiple
-                        accept=".pdf,.txt,.doc,.docx"
-                        onChange={handleFileSelect}
-                        style={{ display: 'none' }}
-                    />
-                </div>
-
-                {selectedFiles.length > 0 && (
-                    <div className="file-list">
-                        {selectedFiles.map((file, index) => (
-                            <div key={index} className="file-item">
-                                <span className="file-item-name">{file.name}</span>
-                                <button
-                                    className="file-item-remove"
-                                    onClick={() => removeFile(index)}
-                                    aria-label="Remove file"
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                <button
-                    className="btn btn-secondary"
-                    onClick={handleUpload}
-                    disabled={selectedFiles.length === 0}
-                >
-                    Upload to RAG
-                </button>
             </div>
 
             <div className="control-group">

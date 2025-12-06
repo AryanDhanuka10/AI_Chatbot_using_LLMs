@@ -46,7 +46,9 @@ function InputArea({ onSendMessage, isTyping, onFileUpload }) {
 
     const handleFileSelect = (e) => {
         const files = Array.from(e.target.files)
-        setSelectedFiles(prev => [...prev, ...files])
+        if (files.length > 0) {
+            setSelectedFiles(prev => [...prev, ...files])
+        }
     }
 
     const removeFile = (index) => {

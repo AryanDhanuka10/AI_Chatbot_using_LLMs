@@ -1,317 +1,300 @@
+Understood — your directory structure has **changed completely**, and your **frontend is now React**, NOT Streamlit.
+
+Your old README is now **incorrect**, **misleading**, and references components you no longer use.
+
+So here is a **fully corrected, clean, formatted, React-compatible README.md**, designed exactly for your **current project structure**.
+
+---
+
+# ✅ **FINAL README.md FOR YOUR PROJECT — FULLY UPDATED FOR REACT + FASTAPI + RAG**
+
+## ✔ Matches your directory structure
+
+## ✔ Mentions all technologies you ACTUALLY use now
+
+## ✔ Professional, deploy-ready, corporate style
+
+## ✔ Clean formatting + image fixed
+
+## ✔ No Streamlit, No outdated components
+
+## ✔ Ready for GitHub
+
+---
+
+# 📘 **AI Chatbot Using LLMs — Multi-Domain Intelligent Assistant**
 
 <p align="center">
-  <img src="frontend/assets/banner.png" alt="AI Chatbot Banner" width="80%">
+  <img src="https://cdn.pixabay.com/photo/2023/03/21/14/40/ai-7868011_1280.jpg" alt="AI Chatbot Banner" width="720">
 </p>
 
+A full-stack **LLM-powered AI Chatbot** built with a modern architecture:
 
-<h1 align="center">🤖 AI Chatbot Using LLMs — Multi-Domain Intelligent Assistant</h1>
+* 🧠 **Groq LLMs (Llama-3.1)**
+* ⚡ **FastAPI Backend**
+* 💻 **React Frontend (Vite)**
+* 🔍 **RAG (Retrieval-Augmented Generation)**
+* 🧩 **Modular Multi-Agent System**
+* 🔒 **Safe Domain-Restricted Prompts**
 
-<p align="center">
-  <b>FastAPI Backend + Streamlit Frontend + RAG + Groq LLMs</b>
-</p>
+This system supports **5 intelligent domains**:
 
----
-
-## 🔗 **Visit Deployed App**
-👉 **Live Demo:** *<your deployed link here>*
-
----
-
-## 📌 **About the Project**
-
-This project is a **full-stack AI Assistant** built using:
-
-- **FastAPI backend**
-- **Groq LLMs** (Llama-3 series)
-- **RAG (Retrieval-Augmented Generation)**
-- **FAISS vector search**
-- **Streamlit frontend** with a stunning cyber-themed UI
-- **Domain routing system (Education / Coding / Medical / Legal / General)**
-
-Unlike a simple chatbot, this system is engineered for **multi-domain intelligence**, **contextual reasoning**, **document-aware conversation**, and **production-ready deployment**.
-
-It is designed as a complete template for creating **personal AI assistants**, **enterprise chatbots**, or **educational tools** that blend LLM reasoning with retrieved knowledge.
+* 🎓 Education
+* 💻 Coding
+* ⚕️ Medical (Safe explanations only)
+* ⚖️ Legal (Non-advisory)
+* 💬 General conversation
 
 ---
 
-## 🚀 **Key Features**
+# 🌐 **Live Deployment**
 
-### 🌐 Multi-Domain AI Assistant  
-Automatically routes queries to specialized agents:
-- Education agent  
-- Coding/debugging agent  
-- Medical Q&A agent  
-- Legal understanding agent  
-- General reasoning agent  
+👉 **Deployed Link:** [(https://ai-chatbot-using-ll-ms.vercel.app/)]
 
-### 📚 RAG Pipeline (Document-Augmented AI)
-Upload PDFs or text files → they are embedded → stored in FAISS → retrieved dynamically.
 
-### ⚡ FastAPI Backend
-- REST `/chat` endpoint  
-- Streaming WebSocket `/stream` endpoint  
-- `/upload` endpoint for RAG documents  
-- Metadata routing + confidence scoring  
+# 🎯 **Key Features**
 
-### 🖥️ Modern Streamlit Frontend
-- Cyberpunk AI theme  
-- Animated chat interface  
-- Message timestamps  
-- Smooth scroll  
-- Chat history export (.json / .txt)  
-- Sliding sidebar  
-- Domain-aware UI highlighting  
+### 🧠 **1. Domain-Aware Multi-Agent System**
 
-### 🔒 Production Ready
-- Environment variables  
-- Modular architecture  
-- Logging  
-- Error fallbacks  
-- Model deprecation protection  
+The Domain Router classifies every query into one of:
+
+| Domain    | Purpose                                     |
+| --------- | ------------------------------------------- |
+| Education | Concepts, theory, step-by-step explanations |
+| Coding    | Debugging, optimization, code generation    |
+| Medical   | Safe educational medical explanations       |
+| Legal     | Educational legal descriptions              |
+| General   | General conversation, reasoning             |
+
+Each agent has its own **expert prompt template** optimized for structured, high-quality responses.
 
 ---
 
-## 🧠 **Models Used**
+### 📚 **2. RAG Pipeline (PDF/TXT Upload + FAISS Retrieval)**
 
-### 🔹 **Groq LLM (Primary Model)**  
-The recommended model:
-```
+Your backend supports:
 
-llama3-groq-8b-tool-use-preview
-
-```
-
-Reason:
-- Extremely fast inference  
-- Strong reasoning  
-- Production stable  
-- Supported by Groq’s latest API  
-
-### 🔹 Sentence Transformer (Embeddings for RAG)
-```
-
-sentence-transformers/all-MiniLM-L6-v2
-
-```
-
-Used for:
-- Document chunk embedding  
-- Semantic similarity search  
-
-### 🔹 FAISS (Vector Store)
-Used for fast retrieval of relevant knowledge chunks.
+* PDF/TXT ingestion
+* Chunking
+* Embedding using **all-MiniLM-L6-v2**
+* FAISS vector indexing
+* Top-K retrieval for relevant context
 
 ---
 
-## 🏗️ **System Architecture**
+### 💻 **3. Modern React Frontend**
+
+Your frontend (in `/frontend/src/`) includes:
+
+* **Animated chat messages**
+* **Typing animation for AI**
+* **Timestamps**
+* **Chat history export**
+* **Sliding sidebar**
+* **Domain highlighting**
+* **File upload for RAG**
+* **Smooth scroll-to-bottom**
+* **Toast notifications**
+
+---
+
+### ⚡ **4. FastAPI Backend**
+
+Endpoints:
+
+| Method | Endpoint  | Function              |
+| ------ | --------- | --------------------- |
+| POST   | `/chat`   | Main REST chat        |
+| POST   | `/upload` | Add documents for RAG |
+| GET    | `/health` | Health check          |
+| WS     | `/stream` | Token streaming       |
+
+---
+
+### 🧩 **5. Clean Modular Architecture**
+
+* Agents
+* Prompt templates
+* RAG pipeline
+* Domain routing
+* LLM wrapper
+* Context memory
+
+Everything extendable & replaceable.
+
+---
+
+# 📦 **Tech Stack**
+
+### **Frontend**
+
+* React
+* Vite
+* Axios
+* Tailwind (optional)
+
+### **Backend**
+
+* FastAPI
+* Groq API (Llama-3.1-70B / 8B)
+* Sentence Transformers
+* FAISS CPU
+* PyPDF2
+
+---
+
+# 📂 **Project Structure**
 
 ```
-
-```
-             USER
-               │
-               ▼
-      ┌────────────────┐
-      │  Streamlit UI  │
-      │ (Chat + Upload)│
-      └────────────────┘
-               │ REST / WS
-               ▼
-    ┌───────────────────────┐
-    │        FastAPI        │
-    │  /chat /stream /upload│
-    └───────────────────────┘
-               │
- ┌─────────────┼─────────────┐
- ▼             ▼             ▼
-```
-
-Domain Router   Agents        RAG Engine
-(LLM-based)   (5 domains)    (FAISS + Embeddings)
+aryandhanuka10-ai_chatbot_using_llms/
+├── README.md
+├── Dockerfile
+├── docker-compose.yml
+├── pyproject.toml
+├── requirements.txt
+├── template.py
+├── .dockerignore
+├── .env.example
 │
-▼
-Groq LLM API
-
-```
-
----
-
-## 📂 **Project Structure**
-
-```
-
-AI_Chatbot_using_LLMs/
-│
-├── src/
-│   ├── api/
-│   │   ├── server.py
-│   │   ├── upload.py
-│   │   ├── deps.py
-│   │   └── schemas.py
-│   │
-│   ├── agents/
-│   │   ├── base_agent.py
-│   │   ├── education_agent.py
-│   │   ├── coding_agent.py
-│   │   ├── medical_agent.py
-│   │   ├── legal_agent.py
-│   │   ├── general_agent.py
-│   │   └── prompts/
-│   │
-│   ├── rag/
-│   │   ├── rag_pipeline.py
-│   │   ├── loader.py
-│   │   └── embedder.py
-│   │
-│   ├── router/
-│   │   └── domain_router.py
-│   │
-│   ├── models/
-│   │   └── llm.py
-│   │
-│   ├── utils/
-│   │   └── context_manager.py
-│   │
-│   └── main.py
+├── config/
+│   └── settings.py
 │
 ├── frontend/
-│   ├── app.py
-│   └── static/style.css
+│   ├── vite.config.js
+│   ├── package.json
+│   └── src/
+│       ├── App.jsx
+│       ├── main.jsx
+│       ├── components/
+│       │   ├── ChatArea.jsx
+│       │   ├── InputArea.jsx
+│       │   ├── Sidebar.jsx
+│       │   └── Toast.jsx
 │
-├── requirements.txt
-└── README.md
-
-````
-
----
-
-# ⚙️ **Setup Instructions (Local Development)**
-
-## 1️⃣ **Clone the Repository**
-```bash
-git clone <your repo link>
-cd AI_Chatbot_using_LLMs
-````
-
----
-
-# 🔐 2️⃣ Create Environment Variables (`.env`)
-
-Create a `.env` file:
-
+└── src/
+    ├── main.py
+    ├── api/
+    │   ├── server.py
+    │   ├── upload.py
+    │   ├── deps.py
+    │   └── schemas.py
+    │
+    ├── agents/
+    │   ├── base_agent.py
+    │   ├── coding_agent.py
+    │   ├── education_agent.py
+    │   ├── general_agent.py
+    │   ├── legal_agent.py
+    │   ├── medical_agent.py
+    │   └── prompts/
+    │       ├── base_prompt.py
+    │       ├── coding_prompt.py
+    │       ├── education_prompt.py
+    │       ├── general_prompt.py
+    │       ├── legal_prompt.py
+    │       └── medical_prompt.py
+    │
+    ├── rag/
+    │   ├── loader.py
+    │   ├── vectorstore.py
+    │   ├── embedder.py
+    │   ├── retriever.py
+    │   └── rag_pipeline.py
+    │
+    ├── models/
+    │   └── llm.py
+    │
+    ├── router/
+    │   └── domain_router.py
+    │
+    └── utils/
+        └── context_manager.py
 ```
-GROQ_API_KEY=your_key_here
-GROQ_MODEL=llama3-groq-8b-tool-use-preview
+
+---
+
+# 🛠️ **Setup Instructions**
+
+## 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/aryandhanuka10/ai_chatbot_using_llms.git
+cd ai_chatbot_using_llms
 ```
 
 ---
 
-# 🐍 3️⃣ Backend Setup (FastAPI)
+# ⚙️ Backend Setup
 
-### Create Conda environment:
+## 2️⃣ Create environment
 
 ```bash
-conda create -n llm_backend python=3.10
+conda create -n llm_backend python=3.10 -y
 conda activate llm_backend
 ```
 
-### Install dependencies:
+## 3️⃣ Install backend dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Start backend:
+## 4️⃣ Create `.env` file
+
+```
+GROQ_API_KEY=your_api_key_here
+GROQ_MODEL=llama-3.1-70b-versatile   # recommended
+```
+
+## 5️⃣ Start backend
 
 ```bash
 uvicorn src.api.server:app --reload
 ```
 
-Backend runs at:
-
-```
-http://127.0.0.1:8000
-```
-
-Test endpoint:
-
-```bash
-curl -X POST http://127.0.0.1:8000/chat \
-  -H "Content-Type: application/json" \
-  -d '{"session_id":"test","message":"hello"}'
-```
+Backend → [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-# 🖥️ 4️⃣ Frontend Setup (Streamlit)
+# 💻 Frontend Setup
 
 Navigate to frontend:
 
 ```bash
 cd frontend
-streamlit run app.py
+npm install
+npm run dev
 ```
 
-Frontend runs at:
+Frontend → [http://localhost:5173](http://localhost:5173)
 
-```
-http://localhost:8501
+---
+
+# 📤 API Example
+
+### Request:
+
+```bash
+curl -X POST http://127.0.0.1:8000/chat \
+-H "Content-Type: application/json" \
+-d '{"session_id":"test","message":"Explain binary search"}'
 ```
 
 ---
 
-## 🧪 **API Endpoints**
+# 🧪 RAG Usage
 
-### POST `/chat`
-
-```
-{
-  "session_id": "123",
-  "message": "Explain OOP"
-}
-```
-
-### POST `/upload`
-
-Upload PDFs or text for RAG.
-
-### WebSocket `/stream`
-
-For token streaming responses.
+Upload PDFs/TXT from the frontend sidebar → backend indexes them → responses include retrieved knowledge.
 
 ---
 
-## 🚀 Deployment Guide
+# 📄 License
 
-### Deploy Backend:
-
-* Render
-* Railway
-* Azure App Service
-* AWS EC2
-* Docker container
-
-### Deploy Frontend:
-
-* Streamlit Community Cloud
-* Docker container
-* CloudRun
+MIT License © 2025 — Aryan Dhanuka
 
 ---
 
-## 🤝 Contributing
+# ⭐ Support
 
-Pull requests are welcome.
-For major changes, open an issue first to discuss the proposal.
+If this project helped you, please ⭐ the repository.
 
----
-
-## 📄 License
-
-MIT License (or your choice)
-
----
-
-## ⭐ Support This Project
-
-If this project helped you, consider giving a **star** ⭐ on GitHub!
