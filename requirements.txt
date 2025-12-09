@@ -1,5 +1,14 @@
 fastapi==0.111.0
 uvicorn[standard]==0.30.0
+fastapi
+uvicorn
+python-dotenv
+openai
+sentence-transformers
+faiss-cpu
+PyPDF2
+httpx
+
 
 # LLM Client (Groq / OpenAI Compatible)
 groq==0.6.0
