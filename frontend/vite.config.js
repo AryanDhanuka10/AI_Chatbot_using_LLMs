@@ -8,11 +8,11 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/chat': {
-        target: 'http://127.0.0.1:8000',
+        target: 'https://ai-chatbot-using-llms.onrender.com',
         changeOrigin: true,
       },
       '/upload': {
-        target: 'http://127.0.0.1:8000',
+        target: 'https://ai-chatbot-using-llms.onrender.com',
         changeOrigin: true,
       },
     },

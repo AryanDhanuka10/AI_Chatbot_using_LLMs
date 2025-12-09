@@ -6,7 +6,7 @@ import InputArea from './components/InputArea'
 import Toast from './components/Toast'
 import './App.css'
 
-const BACKEND_URL = 'http://127.0.0.1:8000'
+const BACKEND_URL = 'https://ai-chatbot-using-llms.onrender.com'
 
 function App() {
   const [sessionId] = useState(`session-${Date.now()}`)
