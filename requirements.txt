@@ -19,8 +19,7 @@ openai==2.9.0
 python-dotenv==1.0.1
 
 # Pydantic v2 (required by FastAPI)
-pydantic==2.7.1
-pydantic-core==2.18.2
+pydantic==2.6.4
 
 # Optional utilities
 requests==2.32.3
