@@ -1,7 +1,8 @@
 .toast {
     position: fixed;
-    bottom: var(--space-8);
-    right: var(--space-8);
+    top: var(--space-8);
+    left: 50%;
+    transform: translate(-50%, -120%);
     padding: var(--space-4) var(--space-6);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
@@ -10,7 +11,6 @@
     color: var(--color-text-primary);
     font-size: var(--font-size-sm);
     font-weight: 600;
-    transform: translateX(400px);
     transition: transform var(--transition-base);
     z-index: 1000;
     max-width: 400px;
@@ -18,8 +18,20 @@
 }
 
 .toast.show {
-    transform: translateX(0);
-    animation: slideInRight 0.4s ease-out;
+    transform: translate(-50%, 0);
+    animation: slideInDown 0.4s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translate(-50%, -120%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
 }
 
 .toast.success {
@@ -42,9 +54,26 @@
 
 @media (max-width: 768px) {
     .toast {
-        bottom: var(--space-6);
-        right: var(--space-6);
+        top: var(--space-6);
         left: var(--space-6);
+        right: var(--space-6);
         max-width: none;
+        transform: translate(0, -120%);
+    }
+
+    .toast.show {
+        transform: translate(0, 0);
+    }
+
+    @keyframes slideInDown {
+        from {
+            transform: translate(0, -120%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translate(0, 0);
+            opacity: 1;
+        }
     }
 }

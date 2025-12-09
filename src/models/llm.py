@@ -12,6 +12,9 @@ from __future__ import annotations
 import os
 import logging
 from typing import Optional, Generator
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Providers
 from openai import OpenAI
@@ -35,9 +38,7 @@ class LLM:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        # -------------------------------
         # Provider Selection Logic
-        # -------------------------------
         groq_key = os.getenv("GROQ_API_KEY")
         openai_key = os.getenv("OPENAI_API_KEY")
 
@@ -66,11 +67,13 @@ class LLM:
                 "No API key found. Set either GROQ_API_KEY or OPENAI_API_KEY."
             )
 
-    # --------------------------------------------------------
     # GENERATE
-    # --------------------------------------------------------
     def generate(self, prompt: str, max_tokens: Optional[int] = None) -> str:
         """Generate a full response from Groq or OpenAI."""
+        print("====== PROMPT SENT TO LLM ======")
+        print(prompt)
+        print("================================")
+
         tokens = max_tokens or self.max_tokens
 
         try:
@@ -100,9 +103,7 @@ class LLM:
             LOGGER.error(f"LLM.generate() failed: {err}")
             return "ERROR: LLM generate() failed"
 
-    # --------------------------------------------------------
     # STREAM
-    # --------------------------------------------------------
     def stream(self, prompt: str) -> Generator[str, None, None]:
         """Streaming response from either provider."""
         try:

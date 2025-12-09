@@ -1,4 +1,4 @@
-import { Plus, Download, History, Clock } from 'lucide-react'
+import { Plus, Download, History, Clock, ChevronLeft, ChevronRight, FileText, X } from 'lucide-react'
 import './Sidebar.css'
 
 const DOMAINS = ['General', 'Education', 'Coding', 'Medical', 'Legal']
@@ -11,7 +11,7 @@ const DOMAIN_ICONS = {
     Legal: '⚖️'
 }
 
-function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport, sessionId, messageCount, chatHistory, onLoadChat }) {
+function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport, sessionId, messageCount, chatHistory, onLoadChat, uploadedFiles = [], onRemoveFile }) {
     return (
         <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
@@ -80,6 +80,45 @@ function Sidebar({ isOpen, onToggle, domain, onDomainChange, onNewChat, onExport
                     </div>
                 </div>
             )}
+
+            {/* Active Documents */}
+            <div className="control-group">
+                <div className="control-heading">
+                    <FileText size={18} style={{ display: 'inline', marginRight: '8px' }} />
+                    Active Documents
+                </div>
+                {uploadedFiles.length > 0 ? (
+                    <div className="uploaded-files-list">
+                        {uploadedFiles.map((file, index) => (
+                            <div key={index} className="uploaded-file-item">
+                                <div className="file-info">
+                                    <FileText size={16} className="file-icon" />
+                                    <div className="file-details">
+                                        <span className="file-name" title={file.filename}>
+                                            {file.filename}
+                                        </span>
+                                        <span className="file-chunks">{file.chunks} chunks</span>
+                                    </div>
+                                </div>
+                                <button
+                                    className="remove-file-btn"
+                                    onClick={() => onRemoveFile(file.filename)}
+                                    aria-label="Remove file"
+                                    title="Remove from context"
+                                >
+                                    <X size={16} />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="empty-state">
+                        <FileText size={24} style={{ opacity: 0.3 }} />
+                        <p>No documents uploaded</p>
+                    </div>
+                )}
+            </div>
+
 
             {/* Session Info */}
             <div className="control-group">

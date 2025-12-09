@@ -5,7 +5,7 @@ import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github-dark.css'
 import './ChatArea.css'
 
-function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesEndRef }) {
+function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesEndRef, uploadedFiles = [] }) {
     const getDomainIcon = (domain) => {
         const icons = {
             General: '🌐',
@@ -48,11 +48,16 @@ function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesE
                     </div>
                 ) : (
                     messages.map((msg, index) => (
-                        <div key={index} className={`message ${msg.role}`}>
+                        <div key={index} className={`message ${msg.role} domain-${msg.domain?.toLowerCase() || 'general'}`}>
                             <div className="message-avatar">
                                 {msg.role === 'user' ? '👤' : '🤖'}
                             </div>
                             <div className="message-content">
+                                <div className="message-header">
+                                    <span className="message-domain-badge">
+                                        [{msg.domain?.toUpperCase() || 'GENERAL'}]
+                                    </span>
+                                </div>
                                 <div className="message-bubble">
                                     {msg.role === 'assistant' ? (
                                         <ReactMarkdown
@@ -78,6 +83,11 @@ function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesE
                                         msg.text
                                     )}
                                 </div>
+                                {msg.role === 'assistant' && uploadedFiles.length > 0 && (
+                                    <div className="context-badge">
+                                        📄 Using context from {uploadedFiles.length} document{uploadedFiles.length > 1 ? 's' : ''}
+                                    </div>
+                                )}
                                 <div className="message-timestamp">{msg.timestamp}</div>
                             </div>
                         </div>

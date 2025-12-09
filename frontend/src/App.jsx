@@ -17,13 +17,19 @@ function App() {
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' })
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [chatHistory, setChatHistory] = useState([])
+  const [uploadedFiles, setUploadedFiles] = useState([])
   const messagesEndRef = useRef(null)
 
-  // Load chat history from localStorage on mount
+  // Load chat history and uploaded files from localStorage on mount
   useEffect(() => {
     const savedHistory = localStorage.getItem('chatHistory')
     if (savedHistory) {
       setChatHistory(JSON.parse(savedHistory))
+    }
+
+    const savedFiles = localStorage.getItem('uploadedFiles')
+    if (savedFiles) {
+      setUploadedFiles(JSON.parse(savedFiles))
     }
   }, [])
 
@@ -86,7 +92,7 @@ function App() {
         body: JSON.stringify({
           session_id: sessionId,
           message: messageText,
-          domain: domain,
+          selected_domain: domain,  // Send selected domain
           model: model,
         }),
       })
@@ -98,7 +104,23 @@ function App() {
       const data = await response.json()
       const aiResponse = data.response || 'No response received'
 
-      // Add AI message
+      // Check if this is a domain mismatch warning
+      const isDomainMismatch =
+        aiResponse.includes('Please switch to') ||
+        aiResponse.includes('Wrong domain selected') ||
+        aiResponse.startsWith('⚠️') ||
+        aiResponse.startsWith('❌') ||
+        data.domain === 'system'
+
+      if (isDomainMismatch) {
+        // Show as warning toast, don't add to chat
+        // Input remains enabled - user can immediately switch domain and retry
+        showToast(aiResponse, 'warning')
+        setIsTyping(false)
+        return
+      }
+
+      // Add AI message (only if not a domain mismatch)
       const aiMessage = {
         role: 'assistant',
         text: aiResponse,
@@ -107,24 +129,13 @@ function App() {
           minute: '2-digit',
           second: '2-digit'
         }),
-        domain
+        domain: data.domain || domain  // Use backend domain if provided
       }
       setMessages(prev => [...prev, aiMessage])
 
     } catch (error) {
       console.error('Chat error:', error)
-      const errorMessage = {
-        role: 'assistant',
-        text: `⚠️ Connection Error: ${error.message}. Please ensure the backend is running.`,
-        timestamp: new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        }),
-        domain
-      }
-      setMessages(prev => [...prev, errorMessage])
-      showToast('Failed to send message', 'error')
+      showToast('Backend offline - Please check connection', 'error')
     } finally {
       setIsTyping(false)
     }
@@ -176,11 +187,13 @@ function App() {
     if (files.length === 0) return
 
     try {
+      const uploadedFileMetadata = []
+
       for (const file of files) {
         const formData = new FormData()
-        formData.append('file', file)
+        formData.append('files', file)
 
-        const response = await fetch(`${BACKEND_URL}/upload`, {
+        const response = await fetch(`${BACKEND_URL}/upload/`, {
           method: 'POST',
           body: formData,
         })
@@ -188,7 +201,24 @@ function App() {
         if (!response.ok) {
           throw new Error(`Failed to upload ${file.name}`)
         }
+
+        const data = await response.json()
+
+        // Store file metadata from backend response
+        uploadedFileMetadata.push({
+          filename: data.filename || file.name,
+          chunks: data.chunks || 0,
+          savedTo: data.saved_to || '',
+          uploadedAt: new Date().toISOString(),
+          size: file.size,
+          type: file.type
+        })
       }
+
+      // Update state and localStorage
+      const updatedFiles = [...uploadedFiles, ...uploadedFileMetadata]
+      setUploadedFiles(updatedFiles)
+      localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles))
 
       showToast(`Successfully uploaded ${files.length} file(s)`, 'success')
     } catch (error) {
@@ -196,11 +226,27 @@ function App() {
     }
   }
 
+  const handleRemoveFile = (filename) => {
+    const updatedFiles = uploadedFiles.filter(f => f.filename !== filename)
+    setUploadedFiles(updatedFiles)
+    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles))
+    showToast(`Removed ${filename} from context`, 'success')
+  }
+
+
   return (
     <div className="app-container">
       <Header />
 
       <div className={`main-layout ${!sidebarOpen ? 'sidebar-hidden' : ''}`}>
+        <button
+          className={`sidebar-edge-toggle ${!sidebarOpen ? 'closed' : ''}`}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          title={sidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
+        >
+          {sidebarOpen ? '◀' : '▶'}
+        </button>
+
         <Sidebar
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen(!sidebarOpen)}
@@ -212,7 +258,10 @@ function App() {
           messageCount={messages.length}
           chatHistory={chatHistory}
           onLoadChat={loadChat}
+          uploadedFiles={uploadedFiles}
+          onRemoveFile={handleRemoveFile}
         />
+
 
         <div className="chat-container">
           <ChatArea
@@ -222,6 +271,7 @@ function App() {
             onModelChange={setModel}
             sessionId={sessionId}
             messagesEndRef={messagesEndRef}
+            uploadedFiles={uploadedFiles}
           />
 
           <InputArea
