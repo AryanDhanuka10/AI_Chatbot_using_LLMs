@@ -135,7 +135,7 @@ function App() {
 
     } catch (error) {
       console.error('Chat error:', error)
-      showToast('Backend offline - Please check connection', 'error')
+      showToast('Backend is temporarily offline. Please try again later.', 'error')
     } finally {
       setIsTyping(false)
     }
