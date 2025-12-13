@@ -122,8 +122,8 @@ Everything is clean, extendable, and production-ready.
 ### **Backend**
 
 * FastAPI
-* **OpenAI GPT-4o / GPT-3.5** (primary LLM)
-* **HuggingFace SentenceTransformers** (embedding only)
+* **OpenAI GPT-4o / GPT-3.5** 
+* **HuggingFace SentenceTransformers** 
 * FAISS CPU
 * PyPDF2
 
