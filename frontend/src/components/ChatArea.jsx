@@ -50,7 +50,7 @@ function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesE
                     messages.map((msg, index) => (
                         <div key={index} className={`message ${msg.role} domain-${msg.domain?.toLowerCase() || 'general'}`}>
                             <div className="message-avatar">
-                                {msg.role === 'user' ? '👤' : '🤖'}
+                                {msg.role === 'user' ? '👤' : msg.role === 'system' ? '⚠️' : '🤖'}
                             </div>
                             <div className="message-content">
                                 <div className="message-header">
@@ -79,8 +79,12 @@ function ChatArea({ messages, domain, model, onModelChange, sessionId, messagesE
                                         >
                                             {msg.text}
                                         </ReactMarkdown>
+                                    ) : msg.role === 'system' ? (
+                                        <div className="system-warning">
+                                            {msg.text}
+                                        </div>
                                     ) : (
-                                        msg.text
+                                        <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
                                     )}
                                 </div>
                                 {msg.role === 'assistant' && uploadedFiles.length > 0 && (

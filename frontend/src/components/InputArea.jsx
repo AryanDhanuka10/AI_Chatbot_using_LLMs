@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Send, Settings, Sun, Moon, Paperclip, X, Image } from 'lucide-react'
 import './InputArea.css'
 
-function InputArea({ onSendMessage, isTyping, onFileUpload }) {
+function InputArea({ onSendMessage, isTyping, isLoading, onFileUpload }) {
     const [message, setMessage] = useState('')
     const [showSettings, setShowSettings] = useState(false)
     const [fontSize, setFontSize] = useState('18')
@@ -12,22 +12,26 @@ function InputArea({ onSendMessage, isTyping, onFileUpload }) {
     const fileInputRef = useRef(null)
 
     const handleSend = () => {
-        if (message.trim() || selectedFiles.length > 0) {
-            if (selectedFiles.length > 0) {
-                onFileUpload(selectedFiles)
-            }
-            if (message.trim()) {
-                onSendMessage(message)
-            }
-            setMessage('')
-            setSelectedFiles([])
+        // Prevent sending if already loading or empty message
+        if (isLoading || (!message.trim() && selectedFiles.length === 0)) return
+
+        if (selectedFiles.length > 0) {
+            onFileUpload(selectedFiles)
         }
+        if (message.trim()) {
+            onSendMessage(message)
+        }
+        setMessage('')
+        setSelectedFiles([])
     }
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            handleSend()
+            // Only send if not loading
+            if (!isLoading) {
+                handleSend()
+            }
         }
     }
 
@@ -102,12 +106,17 @@ function InputArea({ onSendMessage, isTyping, onFileUpload }) {
                 <textarea
                     ref={textareaRef}
                     className="message-input"
-                    placeholder="Type your message here..."
+                    placeholder={isLoading ? "Waiting for response..." : "Type your message here..."}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={handleKeyDown}
                     rows={1}
-                    style={{ fontSize: `${fontSize}px` }}
+                    style={{
+                        fontSize: `${fontSize}px`,
+                        opacity: isLoading ? 0.6 : 1,
+                        cursor: isLoading ? 'not-allowed' : 'text'
+                    }}
+                    disabled={isLoading}
                 />
                 <div className="input-actions">
                     <input
@@ -123,6 +132,8 @@ function InputArea({ onSendMessage, isTyping, onFileUpload }) {
                         onClick={() => fileInputRef.current?.click()}
                         aria-label="Attach files"
                         title="Attach files or images"
+                        disabled={isLoading}
+                        style={{ opacity: isLoading ? 0.5 : 1 }}
                     >
                         <Paperclip size={20} />
                     </button>
@@ -134,7 +145,16 @@ function InputArea({ onSendMessage, isTyping, onFileUpload }) {
                     >
                         <Settings size={20} />
                     </button>
-                    <button className="send-btn" onClick={handleSend} aria-label="Send message">
+                    <button
+                        className="send-btn"
+                        onClick={handleSend}
+                        aria-label="Send message"
+                        disabled={isLoading}
+                        style={{
+                            opacity: isLoading ? 0.5 : 1,
+                            cursor: isLoading ? 'not-allowed' : 'pointer'
+                        }}
+                    >
                         <Send size={20} />
                     </button>
                 </div>

@@ -240,9 +240,23 @@
     color: white;
 }
 
-.message.domain-system .message-bubble::before {
-    content: '⚠️ ';
+.message.system .message-avatar {
+    background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+    border: 2px solid #F59E0B;
 }
+
+.message.system .message-bubble {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+    border: 2px solid #F59E0B;
+    color: var(--color-text-primary);
+}
+
+.system-warning {
+    font-weight: 500;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
 
 /* Context Badge */
 .context-badge {

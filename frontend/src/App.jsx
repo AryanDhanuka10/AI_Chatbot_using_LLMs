@@ -6,7 +6,7 @@ import InputArea from './components/InputArea'
 import Toast from './components/Toast'
 import './App.css'
 
-const BACKEND_URL = 'https://ai-chatbot-using-llms.onrender.com'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://ai-chatbot-using-llms.onrender.com'
 
 function App() {
   const [sessionId] = useState(`session-${Date.now()}`)
@@ -14,6 +14,7 @@ function App() {
   const [model, setModel] = useState('llama-3.1-70b-versatile')
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' })
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [chatHistory, setChatHistory] = useState([])
@@ -65,7 +66,11 @@ function App() {
   }
 
   const handleSendMessage = async (messageText) => {
-    if (!messageText.trim()) return
+    if (!messageText.trim() || isLoading) return
+
+    // Set loading state to prevent duplicate submissions
+    setIsLoading(true)
+    setIsTyping(true)
 
     // Add user message
     const userMessage = {
@@ -80,9 +85,6 @@ function App() {
     }
     setMessages(prev => [...prev, userMessage])
 
-    // Show typing indicator
-    setIsTyping(true)
-
     try {
       const response = await fetch(`${BACKEND_URL}/chat`, {
         method: 'POST',
@@ -92,13 +94,13 @@ function App() {
         body: JSON.stringify({
           session_id: sessionId,
           message: messageText,
-          selected_domain: domain,  // Send selected domain
+          selected_domain: domain,
           model: model,
         }),
       })
 
       if (!response.ok) {
-        throw new Error(`Backend error: ${response.status}`)
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
       const data = await response.json()
@@ -113,31 +115,46 @@ function App() {
         data.domain === 'system'
 
       if (isDomainMismatch) {
-        // Show as warning toast, don't add to chat
-        // Input remains enabled - user can immediately switch domain and retry
-        showToast(aiResponse, 'warning')
-        setIsTyping(false)
-        return
+        // Add as system warning message in chat
+        const systemMessage = {
+          role: 'system',
+          text: aiResponse,
+          timestamp: new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          }),
+          domain: 'system'
+        }
+        setMessages(prev => [...prev, systemMessage])
+        showToast('Domain mismatch detected', 'warning')
+      } else {
+        // Add AI message (only if not a domain mismatch)
+        const aiMessage = {
+          role: 'assistant',
+          text: aiResponse,
+          timestamp: new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          }),
+          domain: data.domain || domain
+        }
+        setMessages(prev => [...prev, aiMessage])
       }
-
-      // Add AI message (only if not a domain mismatch)
-      const aiMessage = {
-        role: 'assistant',
-        text: aiResponse,
-        timestamp: new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        }),
-        domain: data.domain || domain  // Use backend domain if provided
-      }
-      setMessages(prev => [...prev, aiMessage])
 
     } catch (error) {
       console.error('Chat error:', error)
-      showToast('Backend is temporarily offline. Please try again later.', 'error')
+
+      // Provide specific error messages for network issues only
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        showToast('⚠️ Backend is temporarily unavailable. Please check your connection.', 'error')
+      } else {
+        showToast(`Error: ${error.message}`, 'error')
+      }
     } finally {
       setIsTyping(false)
+      setIsLoading(false)
     }
   }
 
@@ -277,6 +294,7 @@ function App() {
           <InputArea
             onSendMessage={handleSendMessage}
             isTyping={isTyping}
+            isLoading={isLoading}
             onFileUpload={handleFileUpload}
           />
         </div>
