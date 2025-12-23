@@ -62,7 +62,8 @@ app.add_middleware(
         "http://localhost:5173",
         "https://ai-chatbot-using-ll-ms.vercel.app",
         "https://ai-chatbot-using-llms.vercel.app",
-        "*",  # keep for now; restrict later
+        "https://huggingface.co",
+        "*",  # Allow all origins for HF Spaces
     ],
     allow_credentials=True,
     allow_methods=["*"],

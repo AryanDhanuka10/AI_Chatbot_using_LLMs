@@ -6,7 +6,7 @@ import InputArea from './components/InputArea'
 import Toast from './components/Toast'
 import './App.css'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://ai-chatbot-using-llms.onrender.com'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://AryanDhanuka10-ai-chatbot-backend.hf.space'
 
 function App() {
   const [sessionId] = useState(`session-${Date.now()}`)
@@ -20,6 +20,7 @@ function App() {
   const [chatHistory, setChatHistory] = useState([])
   const [uploadedFiles, setUploadedFiles] = useState([])
   const messagesEndRef = useRef(null)
+  const abortControllerRef = useRef(null)
 
   // Load chat history and uploaded files from localStorage on mount
   useEffect(() => {
@@ -85,6 +86,10 @@ function App() {
     }
     setMessages(prev => [...prev, userMessage])
 
+    // Create AbortController for timeout handling
+    abortControllerRef.current = new AbortController()
+    const timeoutId = setTimeout(() => abortControllerRef.current?.abort(), 60000) // 60 second timeout
+
     try {
       const response = await fetch(`${BACKEND_URL}/chat`, {
         method: 'POST',
@@ -97,7 +102,10 @@ function App() {
           selected_domain: domain,
           model: model,
         }),
+        signal: abortControllerRef.current.signal,
       })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
@@ -144,17 +152,25 @@ function App() {
       }
 
     } catch (error) {
+      clearTimeout(timeoutId)
       console.error('Chat error:', error)
 
-      // Provide specific error messages for network issues only
-      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-        showToast('⚠️ Backend is temporarily unavailable. Please check your connection.', 'error')
+      // Provide specific error messages
+      if (error.name === 'AbortError') {
+        showToast('⏱️ Request timed out. The backend is taking too long to respond. Please try again.', 'error')
+      } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        showToast('🔌 Cannot connect to backend. Please check your internet connection or try again later.', 'error')
+      } else if (error.message.includes('HTTP 5')) {
+        showToast('⚠️ Backend server error. Please try again in a moment.', 'error')
+      } else if (error.message.includes('HTTP 4')) {
+        showToast('❌ Invalid request. Please check your input and try again.', 'error')
       } else {
         showToast(`Error: ${error.message}`, 'error')
       }
     } finally {
       setIsTyping(false)
       setIsLoading(false)
+      abortControllerRef.current = null
     }
   }
 
@@ -203,6 +219,10 @@ function App() {
   const handleFileUpload = async (files) => {
     if (files.length === 0) return
 
+    // Create AbortController for timeout handling (longer timeout for file uploads)
+    const uploadAbortController = new AbortController()
+    const timeoutId = setTimeout(() => uploadAbortController.abort(), 120000) // 120 second timeout
+
     try {
       const uploadedFileMetadata = []
 
@@ -213,6 +233,7 @@ function App() {
         const response = await fetch(`${BACKEND_URL}/upload/`, {
           method: 'POST',
           body: formData,
+          signal: uploadAbortController.signal,
         })
 
         if (!response.ok) {
@@ -232,6 +253,8 @@ function App() {
         })
       }
 
+      clearTimeout(timeoutId)
+
       // Update state and localStorage
       const updatedFiles = [...uploadedFiles, ...uploadedFileMetadata]
       setUploadedFiles(updatedFiles)
@@ -239,7 +262,17 @@ function App() {
 
       showToast(`Successfully uploaded ${files.length} file(s)`, 'success')
     } catch (error) {
-      showToast(`Upload failed: ${error.message}`, 'error')
+      clearTimeout(timeoutId)
+      console.error('Upload error:', error)
+
+      // Provide specific error messages
+      if (error.name === 'AbortError') {
+        showToast('⏱️ Upload timed out. File may be too large or connection is slow.', 'error')
+      } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        showToast('🔌 Cannot connect to backend. Please check your connection.', 'error')
+      } else {
+        showToast(`Upload failed: ${error.message}`, 'error')
+      }
     }
   }
 
