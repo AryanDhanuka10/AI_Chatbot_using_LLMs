@@ -6,7 +6,7 @@ import InputArea from './components/InputArea'
 import Toast from './components/Toast'
 import './App.css'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://AryanDhanuka10-ai-chatbot-backend.hf.space'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://huggingface.co/spaces/AryanDhanuka10/AI_Chat'
 
 function App() {
   const [sessionId] = useState(`session-${Date.now()}`)
