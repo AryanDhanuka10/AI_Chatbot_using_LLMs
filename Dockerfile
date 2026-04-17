@@ -17,6 +17,8 @@ RUN pip install --upgrade pip && \
 # Copy application code
 COPY . .
 
+ENV PYTHONPATH=/app
+
 # Expose port (HuggingFace uses 7860)
 EXPOSE 7860
 
